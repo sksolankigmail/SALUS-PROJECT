@@ -1,0 +1,117 @@
+<!-- mol_biometricsCapture.html -->
+<template>
+    <div class="biometric-container">
+        <div class="header-section">
+            <h2 class="title">Biometric Photo Capture</h2>
+            <p class="subtitle">Please take a clear photo of your face for verification</p>
+        </div>
+
+        <!-- Camera Feed Section -->
+        <template if:true={showCapturedImage}>
+            <div class="camera-section">
+                <div class="camera-container"
+                    style="position: relative; width: 100%; max-width: 640px; aspect-ratio: 4/3;">
+                    <video class="video-feed" autoplay playsinline muted></video>
+                    <canvas class="photo-canvas" style="display: none;"></canvas>
+                    <canvas class="overlay-canvas"></canvas>
+                    <div class="face-border-guide"></div>
+
+                </div>
+            </div>
+        </template>
+
+        <!-- Captured Image Preview -->
+        <template if:true={capturedImage}>
+            <template if:true={showPreviewImage}>
+                <div class="preview-section">
+                    <div class="preview-container">
+                        <img src={capturedImage} alt="Captured Photo" class="captured-image" />
+                    </div>
+                </div>
+            </template>
+
+        </template>
+
+        <!-- Loading Indicator -->
+        <template if:true={isValidatingFace}>
+            <div class="loading-section">
+                <div class="spinner-container">
+                    <div class="spinner"></div>
+                    <p class="loading-text">Validating face detection...</p>
+                </div>
+            </div>
+        </template>
+
+        <!-- Action Buttons -->
+        <div class="button-section">
+            <!-- Open Camera Button -->
+            <template if:true={showOpenCamera}>
+                <button
+                    class="btn btn-primary btn-large"
+                    onclick={startCamera}
+                >
+                    <span class="btn-icon">📷</span>
+                    Open Camera
+                </button>
+            </template>
+
+            <!-- Take Photo Button -->
+            <template if:true={showTakePhoto}>
+                <button
+                    class="btn btn-success btn-large"
+                    onclick={capturePhoto}
+                    disabled={isValidatingFace}
+                >
+                    <span class="btn-icon">📸</span>
+                    Take Photo
+                </button>
+            </template>
+
+            <!-- Action Buttons Row -->
+            <template if:true={showRetake}>
+                <div class="button-row">
+                    <button
+                        class="btn btn-secondary"
+                        onclick={handleRetake}
+                    >
+                        <span class="btn-icon">🔄</span>
+                        Retake
+                    </button>
+
+                    <button
+                        class="btn btn-success"
+                        onclick={handleSave}
+                    >
+                        <span class="btn-icon">💾</span>
+                        Save Photo
+                    </button>
+                </div>
+            </template>
+
+            <!-- Navigation Buttons -->
+            <div class="nav-buttons">
+                <button
+                    class="btn btn-outline"
+                    onclick={handleBack}
+                >
+                    <span class="btn-icon">←</span>
+                    Back
+                </button>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions-section">
+            <div class="instruction-card">
+                <h3>Photo Guidelines:</h3>
+                <ul class="instruction-list">
+                    <li>✓ Ensure your face is clearly visible</li>
+                    <li>✓ Remove sunglasses if wearing any</li>
+                    <li>✓ Face the camera directly</li>
+                    <li>✓ Use adequate lighting</li>
+                    <li>✗ Avoid covering your face with hands or objects</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>
